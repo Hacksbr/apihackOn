@@ -14,11 +14,24 @@ const db = require('../db');
  *           type: integer
  *         nome:
  *           type: string
+ *         sobrenome:
+ *           type: string
  *         rg:
+ *           type: string
+ *         cpf:
  *           type: string
  *         email:
  *           type: string
  *         telefone:
+ *           type: string
+ *         nacionalidade:
+ *           type: string
+ *         data_nascimento:
+ *           type: string
+ *           format: date
+ *         local_trabalho:
+ *           type: string
+ *         cargo:
  *           type: string
  */
 
@@ -83,5 +96,88 @@ router.post('/users', (req, res) => {
 });
 
 // Implemente as rotas PUT e DELETE aqui
+
+router.post('/users', (req, res) => {
+  const {
+    nome,
+    sobrenome,
+    rg,
+    cpf,
+    email,
+    telefone,
+    nacionalidade,
+    data_nascimento,
+    local_trabalho,
+    cargo
+  } = req.body;
+  db.run(
+    'INSERT INTO users (nome, sobrenome, rg, cpf, email, telefone, nacionalidade, data_nascimento, local_trabalho, cargo) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+    [
+      nome,
+      sobrenome,
+      rg,
+      cpf,
+      email,
+      telefone,
+      nacionalidade,
+      data_nascimento,
+      local_trabalho,
+      cargo
+    ],
+    function(err) {
+      if (err) {
+        res.status(500).json({ error: err.message });
+        return;
+      }
+      res.json({ id: this.lastID });
+    }
+  );
+});
+
+// Rota PUT para atualizar um usuário existente
+router.put('/users/:id', (req, res) => {
+  const userId = req.params.id;
+  const {
+    nome,
+    sobrenome,
+    rg,
+    cpf,
+    email,
+    telefone,
+    nacionalidade,
+    data_nascimento,
+    local_trabalho,
+    cargo
+  } = req.body;
+  db.run(
+    'UPDATE users SET nome=?, sobrenome=?, rg=?, cpf=?, email=?, telefone=?, nacionalidade=?, data_nascimento=?, local_trabalho=?, cargo=? WHERE id=?',
+    [
+      nome,
+      sobrenome,
+      rg,
+      cpf,
+      email,
+      telefone,
+      nacionalidade,
+      data_nascimento,
+      local_trabalho,
+      cargo,
+      userId
+    ],
+    function(err) {
+      if (err) {
+        res.status(500).json({ error: err.message });
+        return;
+      }
+      res.json({ message: 'Usuário atualizado com sucesso' });
+    }
+  );
+});
+
+
+
+
+
+
 
 module.exports = router;

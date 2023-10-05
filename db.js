@@ -7,9 +7,15 @@ db.serialize(() => {
     CREATE TABLE users (
       id INTEGER PRIMARY KEY,
       nome TEXT,
+      sobrenome TEXT,
       rg TEXT,
+      cpf TEXT,
       email TEXT,
-      telefone TEXT
+      telefone TEXT,
+      nacionalidade TEXT,
+      data_nascimento TEXT,
+      local_trabalho TEXT,
+      cargo TEXT
     )
   `);
 });
